@@ -21,6 +21,7 @@ app.get('/', (req, res) => {
 });
 
 app.post('/analyze-case', async (req, res) => {
+   // console.log(req)
     const { caseDetails } = req.body;
     //console.log(caseDetails);
     try {
