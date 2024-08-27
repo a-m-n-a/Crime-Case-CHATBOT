@@ -3,7 +3,9 @@ const app = express();
 const axios = require('axios');
 const cors = require('cors');
 const fs = require('fs');
+const path = require('path');
 
+app.use(express.static(path.join(__dirname, 'public')));  // Make sure your CSS file is in the 'public' directory
 app.use(cors());
 
 app.use(express.json());
