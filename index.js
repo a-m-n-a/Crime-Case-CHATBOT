@@ -5,10 +5,11 @@ const cors = require('cors');
 const fs = require('fs');
 const path = require('path');
 
-app.use(express.static(path.join(__dirname, 'public')));  // Make sure your CSS and JS files are in the 'public' directory
-app.use(cors());
+app.use(express.static(path.join(__dirname, 'public')));  // Make sure the CSS and JS files are in the 'public' directory
 
-app.use(express.json());
+app.use(cors());//allows requests from different ports
+
+app.use(express.json());//parses the js json format to js object
 
 app.get('/', (req, res) => {
    const filePath="./index.html";
@@ -29,24 +30,31 @@ app.post('/analyze-case', async (req, res) => {
     try {
         // Call Groq API with the case details
         const groqResponse = await axios.post('https://api.groq.com/openai/v1/chat/completions', {
-            model: 'llama3-8b-8192',  // Replace 'your_model_name' with the actual model name
+            //payload
+            model: 'llama3-8b-8192',  
             messages: [
                 { role: 'system', content: 'You are a legal assistant.' },
-                { role: 'user', content: `Here are the details of a crime: ${caseDetails}. Please provide a detailed summary of the case and identify the applicable legal sections with references.` }
+                { role: 'user', content: `Here are the details of a crime: ${caseDetails}. Please provide a detailed summary of the case and identify the applicable legal sections with references.` }//prompt
             ],
-            max_tokens: 500,  // Adjust based on your needs
-            temperature: 0.7  // Optional parameter for randomness
+            max_tokens: 500, //limits the length of response 
+            temperature: 0.7  //unit of randomness//lower value = focused + deterministic output //higher value= creative + varied output
         }, {
+            //haeders(additional info)
             headers: {
-                'Authorization': `Bearer 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`  // Replace with your actual API key
+                'Authorization': `Bearer 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`  //This header is used to authenticate the request. The Groq API requires an API key (provided after Bearer) to verify that the request is coming from an authorized user
             }
         });
         
+        //console.log(groqResponse.data.choices)
+
         // Extract the generated response text from the choices array
         const responseText = groqResponse.data.choices[0].message.content;
         //console.log(responseText);
-       // Assume the response text is structured like "Summary: <summary> Sections: <sections>"
-       const summaryMatch = responseText.match(/Summary:\s*(.*?)(?=Sections:|$)/s);
+       //mostly the response text is structured like "Summary: <summary> Sections: <sections>"
+       const summaryMatch = responseText.match(/Summary:\s*(.*?)(?=Sections:|$)/s);//This match method applies the regular expression to the responseText string and returns an array of matches or null if no match is found.
+       //summaryMatch will be an array where:
+            //   summaryMatch[0] contains the entire matched string including "Summary:" and the text following it up to "Sections:" or the end of the string.
+            //   summaryMatch[1] contains only the captured summary text, excluding "Summary:" and any whitespace.
        const sectionsMatch = responseText.match(/Sections:\s*(.*)/s);
 
        const summary = summaryMatch ? summaryMatch[1].trim() : 'No summary provided';
