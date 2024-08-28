@@ -1,7 +1,7 @@
 document.getElementById('caseForm').addEventListener('submit', async function(event) {
     event.preventDefault();
     const caseDetails = document.getElementById('caseDetails').value;
-    const response = await fetch('http://localhost:3000/analyze-case', {
+        const response = await fetch('http://localhost:3000/analyze-case', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ caseDetails })
