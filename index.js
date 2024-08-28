@@ -44,7 +44,7 @@ app.post('/analyze-case', async (req, res) => {
         
         // Extract the generated response text from the choices array
         const responseText = groqResponse.data.choices[0].message.content;
-        console.log(responseText);
+        //console.log(responseText);
        // Assume the response text is structured like "Summary: <summary> Sections: <sections>"
        const summaryMatch = responseText.match(/Summary:\s*(.*?)(?=Sections:|$)/s);
        const sectionsMatch = responseText.match(/Sections:\s*(.*)/s);
