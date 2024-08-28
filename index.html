@@ -26,7 +26,7 @@ button { padding: 10px 20px; font-size: 16px; cursor: pointer; background-color:
         document.getElementById('caseForm').addEventListener('submit', async function (event) {
     event.preventDefault();
     const caseDetails = document.getElementById('caseDetails').value;
-    const response = await fetch('crime-case-chatbot-git-main-amnas-projects-a17efd7c.vercel.app/analyze-case', {
+    const response = await fetch('http://localhost:3000/analyze-case', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ caseDetails })
