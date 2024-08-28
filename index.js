@@ -6,7 +6,7 @@ const fs = require('fs');
 const path = require('path');
 
 app.use(express.static(path.join(__dirname, 'public')));  // Make sure your CSS and JS files are in the 'public' directory
-//app.use(cors());
+app.use(cors());
 
 app.use(express.json());
 
